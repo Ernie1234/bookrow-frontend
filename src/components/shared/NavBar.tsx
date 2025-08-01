@@ -11,8 +11,8 @@ function NavBar({ scrollPast }: Props) {
   return (
     <nav
       className={cn(
-        "top-0 right-0 left-0 z-50 fixed flex mx-auto w-full h-28 transition-all duration-300 ease-in-out",
-        scrollPast ? "bg-gray-50/30 backdrop-filter" : "bg-transparent"
+        "top-0 right-0 left-0 z-50 fixed flex mx-auto w-full h-28 transition-all duration-300 ease-in-out backdrop-filter backdrop-blur",
+        scrollPast ? "bg-bukrow-foreground/20 " : "bg-transparent"
       )}
     >
       <div className="flex justify-between items-center mx-auto px-4 pl-8 md:pl-24 w-full font-semibold text-white">
@@ -22,7 +22,7 @@ function NavBar({ scrollPast }: Props) {
           <li className="">Community</li>
           <li className="">Subscription</li>
         </ul>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <BsChatDots size={24} />
           <Icon icon="hugeicons:notification-01" width="24" height="24" />
         </div>
