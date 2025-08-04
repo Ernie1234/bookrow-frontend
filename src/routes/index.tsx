@@ -105,8 +105,12 @@ function Index() {
           </div>
           <div className="top-0 flex justify-between items-center gap-8 bg-[#b3c9bc] p-12 rounded-tl-[6rem] w-10/12 h-36">
             <div className="flex gap-4">
-              <Button>Get Started</Button>
-              <Button>Login</Button>
+              <Button asChild>
+                <Link to="/register">Get Started</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/login">Login</Link>
+              </Button>
             </div>
 
             <p className="font-montserrat text-white">

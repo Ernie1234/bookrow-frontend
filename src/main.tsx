@@ -30,6 +30,7 @@ if (!rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
+
         {/* <App /> */}
       </QueryClientProvider>
     </StrictMode>
