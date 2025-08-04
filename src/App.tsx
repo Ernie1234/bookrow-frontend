@@ -1,3 +1,5 @@
+//app.tsx
+
 // // In your root component or layout
 // import { Navigate, Outlet, useRouter } from "@tanstack/react-router";
 // import { useIsAuthenticated, useUserRole } from "./store/authStore";

@@ -13,7 +13,7 @@ export function useRedirect() {
       isAuthenticated &&
       ["/login", "/register"].includes(location.pathname)
     ) {
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/layout/dashboard" });
     }
   }, [isAuthenticated, location.pathname, navigate]);
 }

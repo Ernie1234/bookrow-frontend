@@ -43,7 +43,7 @@ function AuthModalWrapper({ children, onAction }: AuthModalWrapperProps) {
               // Small delay to ensure navigation completes before action
               setTimeout(onAction, 100);
             } else {
-              navigate({ to: "/dashboard" });
+              navigate({ to: "/layout/dashboard" });
             }
           }}
         />
