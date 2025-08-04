@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import type { RegisterData } from "../validation/authValidationSchema";
+import type {
+  LoginData,
+  RegisterData,
+} from "../validation/authValidationSchema";
 import { toast } from "sonner";
 import { useAuthStore } from "../store/authStore";
 
@@ -27,6 +30,20 @@ interface RegisterResponse {
     username: string;
     email: string;
     role: "USER" | "ADMIN";
+    userImage?: string;
+  };
+}
+
+interface LoginResponse {
+  message: string;
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    role: "USER" | "ADMIN" | "SUPER_ADMIN";
     userImage?: string;
   };
 }
@@ -90,6 +107,52 @@ export const useRegisterUser = (options?: {
         }
       }
 
+      const formattedError = new Error(errorMessage);
+      toast.error(errorMessage);
+
+      if (options?.onError) {
+        options.onError(formattedError);
+      }
+    },
+  });
+};
+
+export const useLogin = (options?: {
+  onSuccess?: (data: LoginResponse) => void;
+  onError?: (error: Error) => void;
+}) => {
+  const queryClient = useQueryClient();
+  const { setAuthState } = useAuthStore();
+
+  return useMutation({
+    mutationFn: async (data: LoginData) => {
+      const response = await axios.post<LoginResponse>(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setAuthState({
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+      });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success(data.message);
+
+      if (options?.onSuccess) {
+        options.onSuccess(data);
+      }
+    },
+    onError: (error: AxiosError<ApiErrorResponse>) => {
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
       const formattedError = new Error(errorMessage);
       toast.error(errorMessage);
 

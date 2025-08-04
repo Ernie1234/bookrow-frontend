@@ -2,12 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
 
 import { LoginForm } from "../../components/auth/login-form";
+import { useRedirect } from "../../hooks/useRedirect";
 
 export const Route = createFileRoute("/(auth)/login")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  useRedirect();
   return (
     <div className="grid lg:grid-cols-2 min-h-svh">
       <div className="flex flex-col gap-4 p-6 md:p-10">

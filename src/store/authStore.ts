@@ -7,7 +7,7 @@ interface User {
   userId?: string;
   username: string;
   email: string;
-  role: "USER" | "ADMIN";
+  role: "USER" | "ADMIN" | "SUPER_ADMIN";
   userImage?: string;
 }
 
@@ -115,6 +115,11 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 export const useIsAuthenticated = () =>
   useAuthStore((state) => state.isAuthenticated);
 export const useCurrentUser = () => useAuthStore((state) => state.user);
+export const useUserRole = () => useAuthStore((state) => state.user?.role);
+export const useIsAdmin = () =>
+  useAuthStore((state) => state.user?.role === "ADMIN");
+export const useIsSuperAdmin = () =>
+  useAuthStore((state) => state.user?.role === "SUPER_ADMIN");
 export const useAuthLoading = () => useAuthStore((state) => state.isLoading);
 export const useAuthError = () => useAuthStore((state) => state.error);
 export const useAuthActions = () =>

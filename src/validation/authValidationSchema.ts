@@ -52,3 +52,10 @@ export const registerSchema = z
  * This provides strong typing for the data object used in the form.
  */
 export type RegisterData = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(1, { message: "Password is required" }),
+});
+
+export type LoginData = z.infer<typeof loginSchema>;
