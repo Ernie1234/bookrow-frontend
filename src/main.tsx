@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import "./index.css";
+import { AuthInitializer } from "./components/auth/AuthInitializer";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -29,7 +30,9 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <RouterProvider router={router} />
+        <AuthInitializer>
+          <RouterProvider router={router} />
+        </AuthInitializer>
 
         {/* <App /> */}
       </QueryClientProvider>

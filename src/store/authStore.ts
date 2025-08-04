@@ -1,10 +1,10 @@
+// store/authStore.ts
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
 
 interface User {
   id: string;
-  userId?: string;
   username: string;
   email: string;
   role: "USER" | "ADMIN" | "SUPER_ADMIN";
@@ -16,6 +16,7 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   isLoading: boolean;
   error: string | null;
 }
@@ -26,6 +27,7 @@ interface AuthActions {
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   logout: () => void;
+  initialize: () => void;
   refreshAccessToken: (newToken: string) => void;
 }
 
@@ -34,6 +36,7 @@ const initialState: AuthState = {
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
+  isInitialized: false,
   isLoading: false,
   error: null,
 };
@@ -48,13 +51,11 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           const decoded = jwtDecode<User>(accessToken);
           set({
             user: {
-              id: decoded.userId || decoded.id,
+              id: decoded.id,
               username: decoded.username || "",
               email: decoded.email || "",
               role: decoded.role || "USER",
-              userImage:
-                decoded.userImage ||
-                "https://placehold.co/400x400/000000/FFFFFF?text=User",
+              userImage: decoded.userImage,
             },
             accessToken,
             refreshToken,
@@ -75,8 +76,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       logout: () => {
         set(initialState);
-        // Optional: Add API call to invalidate tokens on server
       },
+
+      initialize: () => set({ isInitialized: true }),
 
       refreshAccessToken: (newToken) => {
         try {
@@ -84,24 +86,22 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           set({
             accessToken: newToken,
             user: {
-              id: decoded.userId || decoded.id,
+              id: decoded.id,
               username: decoded.username || "",
               email: decoded.email || "",
               role: decoded.role || "USER",
-              userImage:
-                decoded.userImage ||
-                "https://placehold.co/400x400/000000/FFFFFF?text=User",
+              userImage: decoded.userImage,
             },
           });
         } catch (error) {
-          console.error("Token refresh error:", error);
+          console.log(error);
           set({ error: "Failed to refresh token" });
         }
       },
     }),
     {
-      name: "auth-storage", // name for the storage
-      storage: createJSONStorage(() => localStorage), // or sessionStorage
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
@@ -111,15 +111,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
   )
 );
 
-// Helper hooks for easier access to store properties
 export const useIsAuthenticated = () =>
   useAuthStore((state) => state.isAuthenticated);
 export const useCurrentUser = () => useAuthStore((state) => state.user);
-export const useUserRole = () => useAuthStore((state) => state.user?.role);
-export const useIsAdmin = () =>
-  useAuthStore((state) => state.user?.role === "ADMIN");
-export const useIsSuperAdmin = () =>
-  useAuthStore((state) => state.user?.role === "SUPER_ADMIN");
 export const useAuthLoading = () => useAuthStore((state) => state.isLoading);
 export const useAuthError = () => useAuthStore((state) => state.error);
 export const useAuthActions = () =>

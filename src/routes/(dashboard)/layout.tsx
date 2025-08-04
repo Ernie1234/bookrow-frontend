@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import ProtectedRoute from "../../components/auth/ProtectedRoute";
 import NotFound from "../../components/dashboard/NotFound";
+import { ProtectedRoute } from "../../components/auth/ProtectedRoute";
 
 export const Route = createFileRoute("/(dashboard)/layout")({
   component: RouteComponent,
