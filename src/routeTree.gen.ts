@@ -11,12 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as dashboardLayoutRouteImport } from './routes/(dashboard)/layout'
+import { Route as dashboardDashboardRouteImport } from './routes/(dashboard)/dashboard'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authNotAuthorizedRouteImport } from './routes/(auth)/not-authorized'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
-import { Route as dashboardLayoutDashboardRouteImport } from './routes/(dashboard)/layout.dashboard'
+import { Route as dashboardDashboardFavoritesRouteImport } from './routes/(dashboard)/dashboard.favorites'
+import { Route as dashboardDashboardDiscoverRouteImport } from './routes/(dashboard)/dashboard.discover'
+import { Route as dashboardDashboardContinueRouteImport } from './routes/(dashboard)/dashboard.continue'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -28,9 +30,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const dashboardLayoutRoute = dashboardLayoutRouteImport.update({
-  id: '/(dashboard)/layout',
-  path: '/layout',
+const dashboardDashboardRoute = dashboardDashboardRouteImport.update({
+  id: '/(dashboard)/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authRegisterRoute = authRegisterRouteImport.update({
@@ -53,11 +55,23 @@ const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const dashboardLayoutDashboardRoute =
-  dashboardLayoutDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => dashboardLayoutRoute,
+const dashboardDashboardFavoritesRoute =
+  dashboardDashboardFavoritesRouteImport.update({
+    id: '/favorites',
+    path: '/favorites',
+    getParentRoute: () => dashboardDashboardRoute,
+  } as any)
+const dashboardDashboardDiscoverRoute =
+  dashboardDashboardDiscoverRouteImport.update({
+    id: '/discover',
+    path: '/discover',
+    getParentRoute: () => dashboardDashboardRoute,
+  } as any)
+const dashboardDashboardContinueRoute =
+  dashboardDashboardContinueRouteImport.update({
+    id: '/continue',
+    path: '/continue',
+    getParentRoute: () => dashboardDashboardRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -67,8 +81,10 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/not-authorized': typeof authNotAuthorizedRoute
   '/register': typeof authRegisterRoute
-  '/layout': typeof dashboardLayoutRouteWithChildren
-  '/layout/dashboard': typeof dashboardLayoutDashboardRoute
+  '/dashboard': typeof dashboardDashboardRouteWithChildren
+  '/dashboard/continue': typeof dashboardDashboardContinueRoute
+  '/dashboard/discover': typeof dashboardDashboardDiscoverRoute
+  '/dashboard/favorites': typeof dashboardDashboardFavoritesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,8 +93,10 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/not-authorized': typeof authNotAuthorizedRoute
   '/register': typeof authRegisterRoute
-  '/layout': typeof dashboardLayoutRouteWithChildren
-  '/layout/dashboard': typeof dashboardLayoutDashboardRoute
+  '/dashboard': typeof dashboardDashboardRouteWithChildren
+  '/dashboard/continue': typeof dashboardDashboardContinueRoute
+  '/dashboard/discover': typeof dashboardDashboardDiscoverRoute
+  '/dashboard/favorites': typeof dashboardDashboardFavoritesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,8 +106,10 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/not-authorized': typeof authNotAuthorizedRoute
   '/(auth)/register': typeof authRegisterRoute
-  '/(dashboard)/layout': typeof dashboardLayoutRouteWithChildren
-  '/(dashboard)/layout/dashboard': typeof dashboardLayoutDashboardRoute
+  '/(dashboard)/dashboard': typeof dashboardDashboardRouteWithChildren
+  '/(dashboard)/dashboard/continue': typeof dashboardDashboardContinueRoute
+  '/(dashboard)/dashboard/discover': typeof dashboardDashboardDiscoverRoute
+  '/(dashboard)/dashboard/favorites': typeof dashboardDashboardFavoritesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,8 +120,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/not-authorized'
     | '/register'
-    | '/layout'
-    | '/layout/dashboard'
+    | '/dashboard'
+    | '/dashboard/continue'
+    | '/dashboard/discover'
+    | '/dashboard/favorites'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,8 +132,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/not-authorized'
     | '/register'
-    | '/layout'
-    | '/layout/dashboard'
+    | '/dashboard'
+    | '/dashboard/continue'
+    | '/dashboard/discover'
+    | '/dashboard/favorites'
   id:
     | '__root__'
     | '/'
@@ -120,8 +144,10 @@ export interface FileRouteTypes {
     | '/(auth)/login'
     | '/(auth)/not-authorized'
     | '/(auth)/register'
-    | '/(dashboard)/layout'
-    | '/(dashboard)/layout/dashboard'
+    | '/(dashboard)/dashboard'
+    | '/(dashboard)/dashboard/continue'
+    | '/(dashboard)/dashboard/discover'
+    | '/(dashboard)/dashboard/favorites'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,7 +157,7 @@ export interface RootRouteChildren {
   authLoginRoute: typeof authLoginRoute
   authNotAuthorizedRoute: typeof authNotAuthorizedRoute
   authRegisterRoute: typeof authRegisterRoute
-  dashboardLayoutRoute: typeof dashboardLayoutRouteWithChildren
+  dashboardDashboardRoute: typeof dashboardDashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -150,11 +176,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(dashboard)/layout': {
-      id: '/(dashboard)/layout'
-      path: '/layout'
-      fullPath: '/layout'
-      preLoaderRoute: typeof dashboardLayoutRouteImport
+    '/(dashboard)/dashboard': {
+      id: '/(dashboard)/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof dashboardDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/register': {
@@ -185,27 +211,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(dashboard)/layout/dashboard': {
-      id: '/(dashboard)/layout/dashboard'
-      path: '/dashboard'
-      fullPath: '/layout/dashboard'
-      preLoaderRoute: typeof dashboardLayoutDashboardRouteImport
-      parentRoute: typeof dashboardLayoutRoute
+    '/(dashboard)/dashboard/favorites': {
+      id: '/(dashboard)/dashboard/favorites'
+      path: '/favorites'
+      fullPath: '/dashboard/favorites'
+      preLoaderRoute: typeof dashboardDashboardFavoritesRouteImport
+      parentRoute: typeof dashboardDashboardRoute
+    }
+    '/(dashboard)/dashboard/discover': {
+      id: '/(dashboard)/dashboard/discover'
+      path: '/discover'
+      fullPath: '/dashboard/discover'
+      preLoaderRoute: typeof dashboardDashboardDiscoverRouteImport
+      parentRoute: typeof dashboardDashboardRoute
+    }
+    '/(dashboard)/dashboard/continue': {
+      id: '/(dashboard)/dashboard/continue'
+      path: '/continue'
+      fullPath: '/dashboard/continue'
+      preLoaderRoute: typeof dashboardDashboardContinueRouteImport
+      parentRoute: typeof dashboardDashboardRoute
     }
   }
 }
 
-interface dashboardLayoutRouteChildren {
-  dashboardLayoutDashboardRoute: typeof dashboardLayoutDashboardRoute
+interface dashboardDashboardRouteChildren {
+  dashboardDashboardContinueRoute: typeof dashboardDashboardContinueRoute
+  dashboardDashboardDiscoverRoute: typeof dashboardDashboardDiscoverRoute
+  dashboardDashboardFavoritesRoute: typeof dashboardDashboardFavoritesRoute
 }
 
-const dashboardLayoutRouteChildren: dashboardLayoutRouteChildren = {
-  dashboardLayoutDashboardRoute: dashboardLayoutDashboardRoute,
+const dashboardDashboardRouteChildren: dashboardDashboardRouteChildren = {
+  dashboardDashboardContinueRoute: dashboardDashboardContinueRoute,
+  dashboardDashboardDiscoverRoute: dashboardDashboardDiscoverRoute,
+  dashboardDashboardFavoritesRoute: dashboardDashboardFavoritesRoute,
 }
 
-const dashboardLayoutRouteWithChildren = dashboardLayoutRoute._addFileChildren(
-  dashboardLayoutRouteChildren,
-)
+const dashboardDashboardRouteWithChildren =
+  dashboardDashboardRoute._addFileChildren(dashboardDashboardRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -214,7 +257,7 @@ const rootRouteChildren: RootRouteChildren = {
   authLoginRoute: authLoginRoute,
   authNotAuthorizedRoute: authNotAuthorizedRoute,
   authRegisterRoute: authRegisterRoute,
-  dashboardLayoutRoute: dashboardLayoutRouteWithChildren,
+  dashboardDashboardRoute: dashboardDashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

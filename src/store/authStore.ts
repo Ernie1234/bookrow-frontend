@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
 
-interface User {
+export interface IUser {
   id: string;
   username: string;
   email: string;
@@ -12,7 +12,7 @@ interface User {
 }
 
 interface AuthState {
-  user: User | null;
+  user: IUser | null;
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
@@ -23,7 +23,7 @@ interface AuthState {
 
 interface AuthActions {
   setAuthState: (tokens: { accessToken: string; refreshToken: string }) => void;
-  setUser: (user: User) => void;
+  setUser: (user: IUser) => void;
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   logout: () => void;
@@ -48,7 +48,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       setAuthState: ({ accessToken, refreshToken }) => {
         try {
-          const decoded = jwtDecode<User>(accessToken);
+          const decoded = jwtDecode<IUser>(accessToken);
           set({
             user: {
               id: decoded.id,
@@ -82,7 +82,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       refreshAccessToken: (newToken) => {
         try {
-          const decoded = jwtDecode<User>(newToken);
+          const decoded = jwtDecode<IUser>(newToken);
           set({
             accessToken: newToken,
             user: {
